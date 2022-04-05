@@ -22,7 +22,8 @@ var todos = backend(process.env.DATABASE_URL);
 function createCallback(res, onSuccess) {
   return function callback(err, data) {
     if (err || !data) {
-      res.send(500, 'Something bad happened!');
+      console.error(err);
+      res.status(500).send('Something bad happened!');
       return;
     }
 
@@ -70,14 +71,14 @@ app.patch('/:id', function(req, res) {
 });
 
 app.delete('/', function(req, res) {
-  todos.clear(createCallback(res, function(todos) {
-    res.send(todos.map(getCreateTodo(req)));
+  todos.clear(createCallback(res, () => {
+    res.send("OK");
   }));
 });
 
 app.delete('/:id', function(req, res) {
-  todos.delete(req.params.id, createCallback(res, function(todo) {
-    res.send(createTodo(req, todo));
+  todos.delete(req.params.id, createCallback(res, () => {
+    res.send("OK");
   }));
 });
 
